@@ -1,0 +1,39 @@
+name: SSLTrus Code Sign
+description: Sign files with the SSLTrus remote code-signing service
+author: SSLTrus
+
+inputs:
+  access-key:
+    description: SSLTrus access key
+    required: true
+  access-secret:
+    description: SSLTrus access secret
+    required: true
+  cert-code:
+    description: SSLTrus certificate code
+    required: true
+  files:
+    description: Comma or newline separated file paths to sign in place
+    required: true
+  nicsrs:
+    description: Use the NICSRS service instead of RACENT
+    required: false
+    default: "false"
+  timestamp-rfc3161:
+    description: RFC 3161 timestamp URL; use an empty value to disable timestamping
+    required: false
+    default: auto
+  description:
+    description: Description embedded in the signature
+    required: false
+  description-url:
+    description: URL embedded in the signature
+    required: false
+
+runs:
+  using: node24
+  main: index.js
+
+branding:
+  icon: shield
+  color: blue
