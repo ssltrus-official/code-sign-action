@@ -19,6 +19,10 @@ inputs:
     description: Use the NICSRS service instead of RACENT
     required: false
     default: "false"
+  dry-run:
+    description: Use a local test certificate without calling the remote signing service
+    required: false
+    default: "false"
   timestamp-rfc3161:
     description: RFC 3161 timestamp URL; use an empty value to disable timestamping
     required: false

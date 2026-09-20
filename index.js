@@ -197,6 +197,9 @@ function buildSignArgs(options, file) {
   if (options.nicsrs) {
     args.push("--address", "nicsrs");
   }
+  if (options.dryRun) {
+    args.push("--dry-run");
+  }
   args.push(`--timestamp-rfc3161=${options.timestampRfc3161}`);
   if (options.description) {
     args.push("--desc", options.description);
@@ -221,6 +224,7 @@ async function main() {
   const certCode = getInput("cert-code", true);
   const filesInput = getInput("files", true);
   const nicsrs = parseBoolean("nicsrs", getInput("nicsrs") || "false");
+  const dryRun = parseBoolean("dry-run", getInput("dry-run") || "false");
   const timestampRfc3161 = getInput("timestamp-rfc3161");
   const description = getInput("description");
   const descriptionUrl = getInput("description-url");
@@ -253,7 +257,7 @@ async function main() {
       fs.chmodSync(executable, 0o755);
     }
 
-    const options = { certCode, nicsrs, timestampRfc3161, description, descriptionUrl };
+    const options = { certCode, nicsrs, dryRun, timestampRfc3161, description, descriptionUrl };
     const env = { ...process.env, ACCESS_KEY: accessKey, ACCESS_SECRET: accessSecret };
     for (const file of files) {
       process.stdout.write(`Signing ${file}\n`);

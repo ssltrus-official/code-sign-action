@@ -33,6 +33,7 @@ runner。
       build/library.dll
       build/installer.msi
     nicsrs: false
+    dry-run: false
     timestamp-rfc3161: http://timestamp.acs.microsoft.com
     description: My Application
     description-url: https://example.com
@@ -44,6 +45,9 @@ runner。
 签名结果会覆盖原文件。签名失败时 Action 会停止，此前已完成签名的文件仍保持
 签名状态。
 
+设置 `dry-run: true` 后，CLI 使用本地测试证书，不调用远程签名服务，但仍会修改
+文件，并且仍须提供 `access-key`、`access-secret` 和 `cert-code`。
+
 ## 输入参数
 
 | 参数                | 必填 | 默认值  | 说明                                        |
@@ -53,6 +57,7 @@ runner。
 | `cert-code`         | 是   |         | SSLTrus 证书编号。                          |
 | `files`             | 是   |         | 逗号或换行分隔的待原地签名文件路径。        |
 | `nicsrs`            | 否   | `false` | 设置为 `true` 时使用 NICSRS。               |
+| `dry-run`           | 否   | `false` | 使用本地测试证书，不调用远程签名服务。      |
 | `timestamp-rfc3161` | 否   | `auto`  | RFC 3161 时间戳地址；传入空值可禁用时间戳。 |
 | `description`       | 否   |         | 写入签名的描述。                            |
 | `description-url`   | 否   |         | 写入签名的 URL。                            |

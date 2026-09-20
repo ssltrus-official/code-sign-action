@@ -57,6 +57,7 @@ test("builds the signtool command with in-place signing", () => {
       {
         certCode: "CERT_CODE",
         nicsrs: true,
+        dryRun: true,
         timestampRfc3161: "",
         description: "Example",
         descriptionUrl: "https://example.com",
@@ -72,6 +73,7 @@ test("builds the signtool command with in-place signing", () => {
       "--override",
       "--address",
       "nicsrs",
+      "--dry-run",
       "--timestamp-rfc3161=",
       "--desc",
       "Example",
