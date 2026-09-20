@@ -1,5 +1,7 @@
 # SSLTrus Code Sign Action
 
+[English](README.md) · [简体中文](README.zh_CN.md)
+
 Sign files in place with the SSLTrus remote code-signing service and the
 official `signtool` command-line client.
 
@@ -9,6 +11,20 @@ then signs each input file sequentially. Linux, macOS, and Windows runners are
 supported when a matching CLI release is available.
 
 ## Usage
+
+### Minimal configuration
+
+```yaml
+- name: Sign files
+  uses: ssltrus-official/code-sign-action@v1
+  with:
+    access-key: ${{ secrets.SSLTRUS_ACCESS_KEY }}
+    access-secret: ${{ secrets.SSLTRUS_ACCESS_SECRET }}
+    cert-code: ${{ secrets.SSLTRUS_CERT_CODE }}
+    files: build/app.exe
+```
+
+### Full configuration
 
 ```yaml
 - name: Sign files
@@ -21,6 +37,7 @@ supported when a matching CLI release is available.
       build/app.exe
       build/library.dll
       build/installer.msi
+    nicsrs: true
     timestamp-rfc3161: http://timestamp.acs.microsoft.com
     description: My Application
     description-url: https://example.com
@@ -43,7 +60,7 @@ failure; files signed before that failure remain signed.
 | `access-secret`     | Yes      |         | SSLTrus access secret.                                               |
 | `cert-code`         | Yes      |         | SSLTrus certificate code.                                            |
 | `files`             | Yes      |         | Comma or newline separated paths to sign in place.                   |
-| `nicsrs`            | No       | `false` | Set to `true` to use NICSRS; `false` uses RACENT.                    |
+| `nicsrs`            | No       | `false` | Set to `true` to use NICSRS.                                         |
 | `timestamp-rfc3161` | No       | `auto`  | RFC 3161 timestamp URL. Pass an empty value to disable timestamping. |
 | `description`       | No       |         | Description embedded in the signature.                               |
 | `description-url`   | No       |         | URL embedded in the signature.                                       |
