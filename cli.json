@@ -1,0 +1,36 @@
+{
+  "version": "v1.5.4",
+  "release": "cli-v1.5.4",
+  "platforms": {
+    "darwin/amd64": {
+      "asset": "signtool-darwin-amd64-v1.5.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/12463/cli/signtool-darwin-amd64-v1.5.4.zip",
+      "size": 8009308,
+      "sha256": "2662bad5b2f3f9192ceec35c5307af0346640a174ca4e4add0fee5a5d3f2134a"
+    },
+    "darwin/arm64": {
+      "asset": "signtool-darwin-arm64-v1.5.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/12463/cli/signtool-darwin-arm64-v1.5.4.zip",
+      "size": 7890401,
+      "sha256": "024f96cb39e929d00b516ad709f5f13b9e482b2322ebeea2530ad2c6ab88bf5e"
+    },
+    "linux/amd64": {
+      "asset": "signtool-linux-amd64-v1.5.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/12463/cli/signtool-linux-amd64-v1.5.4.zip",
+      "size": 8731339,
+      "sha256": "e70ebfbd56c2f2ceb67a034e105b3211ae661e8812c787de1aa99db599c1bab1"
+    },
+    "linux/arm64": {
+      "asset": "signtool-linux-arm64-v1.5.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/12463/cli/signtool-linux-arm64-v1.5.4.zip",
+      "size": 8487198,
+      "sha256": "5feee19b8905482b1debfd357209bb2901b8dbd4546cd47154d8e9b4ef764d40"
+    },
+    "windows/amd64": {
+      "asset": "signtool-windows-amd64-v1.5.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/12463/cli/signtool-windows-amd64-v1.5.4.zip",
+      "size": 8470258,
+      "sha256": "fd3f1cca7aa2f00b11169b3b1446c5d25ce9855d907b3c0a5f1ec390233bd9cf"
+    }
+  }
+}

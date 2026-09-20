@@ -3,9 +3,10 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const CLI_MANIFEST = require("./cli.json");
 
-const RELEASES_URL = "https://pccs.ssltrus.cn/oss-code-sign-client/latest.json";
-const RELEASES_HOST = "pccs.ssltrus.cn";
+const ACTION_REPOSITORY = "ssltrus-official/code-sign-action";
+const RELEASES_HOST = "github.com";
 const MAX_DOWNLOAD_SIZE = 100 * 1024 * 1024;
 
 function getInput(name, required = false) {
@@ -76,17 +77,17 @@ function runnerPlatform(platform = process.platform, arch = process.arch) {
   };
 }
 
-function selectRelease(releases, platformKey) {
-  if (!Array.isArray(releases)) {
-    throw new Error("release metadata must be an array");
+function selectRelease(manifest, platformKey) {
+  const metadata = manifest.platforms?.[platformKey];
+  if (!metadata) {
+    throw new Error(`no CLI release for ${platformKey}`);
   }
-  const matches = releases.filter(
-    (release) => release && release.type === 1 && release.platform === platformKey,
-  );
-  if (matches.length !== 1) {
-    throw new Error(`expected one CLI release for ${platformKey}, found ${matches.length}`);
-  }
-  return validateRelease(matches[0]);
+  return validateRelease({
+    ...metadata,
+    platform: platformKey,
+    version: manifest.version,
+    url: `https://${RELEASES_HOST}/${ACTION_REPOSITORY}/releases/download/${manifest.release}/${metadata.asset}`,
+  });
 }
 
 function validateRelease(release) {
@@ -106,21 +107,16 @@ function validateRelease(release) {
   return release;
 }
 
-async function fetchJson(url) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) });
-  if (!response.ok) {
-    throw new Error(`release metadata request failed: HTTP ${response.status}`);
-  }
-  return response.json();
-}
-
 async function downloadRelease(release, destination) {
   const response = await fetch(release.url, { signal: AbortSignal.timeout(60_000) });
   if (!response.ok) {
     throw new Error(`CLI download failed: HTTP ${response.status}`);
   }
   const finalUrl = new URL(response.url);
-  if (finalUrl.protocol !== "https:" || finalUrl.hostname !== RELEASES_HOST) {
+  if (
+    finalUrl.protocol !== "https:" ||
+    (finalUrl.hostname !== RELEASES_HOST && !finalUrl.hostname.endsWith(".githubusercontent.com"))
+  ) {
     throw new Error(`unexpected CLI download redirect: ${response.url}`);
   }
   if (!response.body) {
@@ -243,7 +239,7 @@ async function main() {
   let signed = 0;
   try {
     fs.mkdirSync(extractDirectory);
-    const release = selectRelease(await fetchJson(RELEASES_URL), runner.key);
+    const release = selectRelease(CLI_MANIFEST, runner.key);
     process.stdout.write(`Downloading SSLTrus signtool ${release.version} for ${runner.key}\n`);
     await downloadRelease(release, archive);
     extractArchive(archive, extractDirectory);

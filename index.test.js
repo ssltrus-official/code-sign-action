@@ -9,6 +9,7 @@ const {
   runnerPlatform,
   selectRelease,
 } = require("./index");
+const cliManifest = require("./cli.json");
 
 test("maps supported runner platforms", () => {
   assert.deepEqual(runnerPlatform("linux", "x64"), {
@@ -39,21 +40,15 @@ test("parses comma and newline separated files without extension filtering", () 
   ]);
 });
 
-test("selects and validates one matching CLI release", () => {
-  const release = {
-    type: 1,
-    platform: "linux/amd64",
-    version: "v1.5.4",
-    url: "https://pccs.ssltrus.cn/releases/signtool.zip",
-    size: 123,
-    sha256: "a".repeat(64),
-  };
-  assert.equal(selectRelease([release], "linux/amd64"), release);
-  assert.throws(() => selectRelease([], "linux/amd64"), /expected one CLI release/);
-  assert.throws(
-    () => selectRelease([{ ...release, url: "https://example.com/signtool.zip" }], "linux/amd64"),
-    /unexpected release URL/,
+test("selects the pinned CLI release for the runner", () => {
+  const release = selectRelease(cliManifest, "linux/amd64");
+  const metadata = cliManifest.platforms["linux/amd64"];
+  assert.equal(release.version, cliManifest.version);
+  assert.equal(
+    release.url,
+    `https://github.com/ssltrus-official/code-sign-action/releases/download/${cliManifest.release}/${metadata.asset}`,
   );
+  assert.throws(() => selectRelease(cliManifest, "windows/arm64"), /no CLI release/);
 });
 
 test("builds the signtool command with in-place signing", () => {

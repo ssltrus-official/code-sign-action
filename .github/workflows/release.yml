@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Validate release tag
+        shell: bash
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release tag: $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+      - name: Validate action
+        run: |
+          node --check index.js
+          node --test index.test.js
+          python3 -m py_compile .github/script/release_cli.py
+          python3 -m py_compile .github/script/update_cli.py
+
+      - name: Download CLI assets
+        id: cli
+        run: python3 .github/script/release_cli.py dist
+
+      - name: Publish CLI assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLI_RELEASE: ${{ steps.cli.outputs.release }}
+          CLI_VERSION: ${{ steps.cli.outputs.version }}
+        shell: bash
+        run: |
+          if gh release view "$CLI_RELEASE" >/dev/null 2>&1; then
+            mkdir published
+            gh release download "$CLI_RELEASE" --dir published
+            for asset in dist/*; do
+              published_asset="published/$(basename "$asset")"
+              if [[ ! -f "$published_asset" ]] || ! cmp --silent "$asset" "$published_asset"; then
+                echo "Published CLI asset differs: $(basename "$asset")" >&2
+                exit 1
+              fi
+            done
+          else
+            gh release create "$CLI_RELEASE" dist/* \
+              --target "$GITHUB_SHA" \
+              --title "SSLTrus CLI $CLI_VERSION" \
+              --notes "CLI binaries used by the SSLTrus Code Sign Action."
+          fi
+
+      - name: Publish action release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" \
+              --verify-tag \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi
+
+      - name: Update major and minor tags
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          major="${version%%.*}"
+          remainder="${version#*.}"
+          minor="${remainder%%.*}"
+          major_tag="v${major}"
+          minor_tag="v${major}.${minor}"
+
+          git tag --force "$major_tag" "$GITHUB_SHA"
+          git tag --force "$minor_tag" "$GITHUB_SHA"
+          git push --atomic --force origin "refs/tags/$major_tag" "refs/tags/$minor_tag"
