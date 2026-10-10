@@ -1,8 +1,8 @@
-# SSLTrus 代码签名 Action
+# sslTrus 代码签名 Action
 
 [English](README.md) · [简体中文](README.zh_CN.md)
 
-使用 SSLTrus 远程代码签名服务原地签名文件。支持 Linux、macOS 和 Windows
+使用 sslTrus 远程代码签名服务原地签名文件。支持 Linux、macOS 和 Windows
 runner。
 
 ## 使用方法
@@ -52,9 +52,9 @@ runner。
 
 | 参数                | 必填 | 默认值  | 说明                                        |
 |---------------------|------|---------|---------------------------------------------|
-| `access-key`        | 是   |         | SSLTrus Access Key。                        |
-| `access-secret`     | 是   |         | SSLTrus Access Secret。                     |
-| `cert-code`         | 是   |         | SSLTrus 证书编号。                          |
+| `access-key`        | 是   |         | sslTrus Access Key。                        |
+| `access-secret`     | 是   |         | sslTrus Access Secret。                     |
+| `cert-code`         | 是   |         | sslTrus 证书编号。                          |
 | `files`             | 是   |         | 逗号或换行分隔的待原地签名文件路径。        |
 | `nicsrs`            | 否   | `false` | 设置为 `true` 时使用 NICSRS。               |
 | `dry-run`           | 否   | `false` | 使用本地测试证书，不调用远程签名服务。      |

@@ -61,8 +61,8 @@ jobs:
           else
             gh release create "$CLI_RELEASE" dist/* \
               --target "$GITHUB_SHA" \
-              --title "SSLTrus CLI $CLI_VERSION" \
-              --notes "CLI binaries used by the SSLTrus Code Sign Action."
+              --title "sslTrus CLI $CLI_VERSION" \
+              --notes "CLI binaries used by the sslTrus Code Sign Action."
           fi
 
       - name: Publish action release

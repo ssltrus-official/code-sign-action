@@ -1,8 +1,8 @@
-# SSLTrus Code Sign Action
+# sslTrus Code Sign Action
 
 [English](README.md) · [简体中文](README.zh_CN.md)
 
-Sign files in place with the SSLTrus remote code-signing service. The action
+Sign files in place with the sslTrus remote code-signing service. The action
 supports Linux, macOS, and Windows runners.
 
 ## Usage
@@ -54,9 +54,9 @@ the remote signing service. Files are still modified, and `access-key`,
 
 | Input               | Required | Default | Description                                                          |
 |---------------------|----------|---------|----------------------------------------------------------------------|
-| `access-key`        | Yes      |         | SSLTrus access key.                                                  |
-| `access-secret`     | Yes      |         | SSLTrus access secret.                                               |
-| `cert-code`         | Yes      |         | SSLTrus certificate code.                                            |
+| `access-key`        | Yes      |         | sslTrus access key.                                                  |
+| `access-secret`     | Yes      |         | sslTrus access secret.                                               |
+| `cert-code`         | Yes      |         | sslTrus certificate code.                                            |
 | `files`             | Yes      |         | Comma or newline separated paths to sign in place.                   |
 | `nicsrs`            | No       | `false` | Set to `true` to use NICSRS.                                         |
 | `dry-run`           | No       | `false` | Use a local test certificate without remote signing.                 |

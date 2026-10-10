@@ -1,16 +1,16 @@
-name: SSLTrus Code Sign
-description: Sign files with the SSLTrus remote code-signing service
-author: SSLTrus
+name: sslTrus Code Sign
+description: Sign files with the sslTrus remote code-signing service
+author: sslTrus
 
 inputs:
   access-key:
-    description: SSLTrus access key
+    description: sslTrus access key
     required: true
   access-secret:
-    description: SSLTrus access secret
+    description: sslTrus access secret
     required: true
   cert-code:
-    description: SSLTrus certificate code
+    description: sslTrus certificate code
     required: true
   files:
     description: Comma or newline separated file paths to sign in place

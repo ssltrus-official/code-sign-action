@@ -244,7 +244,7 @@ async function main() {
   try {
     fs.mkdirSync(extractDirectory);
     const release = selectRelease(CLI_MANIFEST, runner.key);
-    process.stdout.write(`Downloading SSLTrus signtool ${release.version} for ${runner.key}\n`);
+    process.stdout.write(`Downloading sslTrus signtool ${release.version} for ${runner.key}\n`);
     await downloadRelease(release, archive);
     extractArchive(archive, extractDirectory);
 
