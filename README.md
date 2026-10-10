@@ -63,3 +63,12 @@ the remote signing service. Files are still modified, and `access-key`,
 | `timestamp-rfc3161` | No       | `auto`  | RFC 3161 timestamp URL. Pass an empty value to disable timestamping. |
 | `description`       | No       |         | Description embedded in the signature.                               |
 | `description-url`   | No       |         | URL embedded in the signature.                                       |
+
+## License
+
+Copyright 2026 sslTrus.
+
+The Action source code, scripts, and documentation are licensed under the
+[Apache License 2.0](LICENSE). This license does not cover CLI or GUI binaries
+downloaded or distributed through releases; those binaries are subject to their
+own license terms.

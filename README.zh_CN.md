@@ -61,3 +61,10 @@ runner。
 | `timestamp-rfc3161` | 否   | `auto`  | RFC 3161 时间戳地址；传入空值可禁用时间戳。 |
 | `description`       | 否   |         | 写入签名的描述。                            |
 | `description-url`   | 否   |         | 写入签名的 URL。                            |
+
+## 许可证
+
+Copyright 2026 sslTrus.
+
+Action 源码、脚本和文档采用 [Apache License 2.0](LICENSE)。此许可证不涵盖
+下载或通过 Release 分发的 CLI、GUI 二进制程序，这些程序遵循各自的许可条款。
