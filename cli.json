@@ -1,36 +1,36 @@
 {
-  "version": "v1.6.3",
-  "release": "cli-v1.6.3",
+  "version": "v1.6.4",
+  "release": "cli-v1.6.4",
   "platforms": {
     "darwin/amd64": {
-      "asset": "signtool-darwin-amd64-v1.6.3.zip",
-      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13122/cli/signtool-darwin-amd64-v1.6.3.zip",
-      "size": 8149325,
-      "sha256": "9770ee12924e77e219149b0a4d92ccfbfb006d7cabcd5a0e6f0fe7de0d15e9a3"
+      "asset": "signtool-darwin-amd64-v1.6.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13558/cli/signtool-darwin-amd64-v1.6.4.zip",
+      "size": 8683252,
+      "sha256": "5c1173ac4acac4e3a6d2b6f77a4fb3c7c8ea1ec1240b16e4ebb624e9725eeeaf"
     },
     "darwin/arm64": {
-      "asset": "signtool-darwin-arm64-v1.6.3.zip",
-      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13122/cli/signtool-darwin-arm64-v1.6.3.zip",
-      "size": 8013025,
-      "sha256": "c84e1e4345c777672f4dc9a0f81ab3a07dc04f8d4b5d0774c08d2aecf0b5b478"
+      "asset": "signtool-darwin-arm64-v1.6.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13558/cli/signtool-darwin-arm64-v1.6.4.zip",
+      "size": 8488248,
+      "sha256": "1e3ef66ef22c1b68952a4bb075eaaa148e381ba941040a627f1845393d742d0d"
     },
     "linux/amd64": {
-      "asset": "signtool-linux-amd64-v1.6.3.zip",
-      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13122/cli/signtool-linux-amd64-v1.6.3.zip",
-      "size": 8867705,
-      "sha256": "aa13a083d596b684c13c80851c6b01f3297cda3a490fbeb92e3c09f9d9f0c3f4"
+      "asset": "signtool-linux-amd64-v1.6.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13558/cli/signtool-linux-amd64-v1.6.4.zip",
+      "size": 9396425,
+      "sha256": "b12c60d66b144cdb00615a921f55163012365555004806d8aa7a2a6fd3c0ec7f"
     },
     "linux/arm64": {
-      "asset": "signtool-linux-arm64-v1.6.3.zip",
-      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13122/cli/signtool-linux-arm64-v1.6.3.zip",
-      "size": 8601702,
-      "sha256": "4b0f721bf6e3e0aa1cb89d4fb827b5c8e70bca928dc1a56a698e934db7342c07"
+      "asset": "signtool-linux-arm64-v1.6.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13558/cli/signtool-linux-arm64-v1.6.4.zip",
+      "size": 9063304,
+      "sha256": "8b0debb2147a1adbab8f289b3536330c637e6d69c32c8bd62fe85067afb9ceaf"
     },
     "windows/amd64": {
-      "asset": "signtool-windows-amd64-v1.6.3.zip",
-      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13122/cli/signtool-windows-amd64-v1.6.3.zip",
-      "size": 8960336,
-      "sha256": "9810e186a9141562c7607286978b426336c1da4a65d04739600e633af41ffaa3"
+      "asset": "signtool-windows-amd64-v1.6.4.zip",
+      "source": "https://pccs.ssltrus.cn/oss-code-sign-client/13558/cli/signtool-windows-amd64-v1.6.4.zip",
+      "size": 9493868,
+      "sha256": "9a00f96b9613c6f98cd6ba5a949e89bd8dad806957749d200a7237d224bcf361"
     }
   }
 }
