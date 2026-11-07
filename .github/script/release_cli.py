@@ -4,13 +4,18 @@ import hashlib
 import json
 import os
 import re
+import ssl
 import sys
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 from urllib.parse import urlparse
 
 
 MAX_DOWNLOAD_SIZE = 100 * 1024 * 1024
+MAX_DOWNLOAD_ATTEMPTS = 3
+RETRYABLE_DOWNLOAD_ERRORS = (ssl.SSLEOFError, TimeoutError, ConnectionError)
 REQUIRED_PLATFORMS = {
     "darwin/amd64",
     "darwin/arm64",
@@ -103,8 +108,24 @@ def main():
 
     for platform in sorted(manifest["platforms"]):
         item = manifest["platforms"][platform]
-        print(f"Downloading {platform} CLI {manifest['version']}")
-        download(item, output_directory / item["asset"])
+        print(f"Downloading {platform} CLI {manifest['version']}", flush=True)
+        for attempt in range(1, MAX_DOWNLOAD_ATTEMPTS + 1):
+            try:
+                download(item, output_directory / item["asset"])
+                break
+            except (urllib.error.URLError, *RETRYABLE_DOWNLOAD_ERRORS) as error:
+                reason = error.reason if isinstance(error, urllib.error.URLError) else error
+                if attempt == MAX_DOWNLOAD_ATTEMPTS or not isinstance(
+                    reason, RETRYABLE_DOWNLOAD_ERRORS
+                ):
+                    raise
+                delay = 2**attempt
+                print(
+                    f"Download failed for {platform} (attempt {attempt}/{MAX_DOWNLOAD_ATTEMPTS}): "
+                    f"{reason}. Retrying in {delay}s.",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
 
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
