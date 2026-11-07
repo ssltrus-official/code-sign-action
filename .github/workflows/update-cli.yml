@@ -1,0 +1,75 @@
+name: Update CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "CLI version, for example v1.6.5"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-cli-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
+      - name: Update CLI manifest and open pull request
+        shell: bash
+        env:
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+          CLI_VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ ! "$CLI_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo 'Expected a CLI version in vMAJOR.MINOR.PATCH format.' >&2
+            exit 1
+          fi
+
+          python3 .github/script/update_cli.py "$CLI_VERSION"
+          if git diff --quiet -- cli.json; then
+            echo "cli.json already matches CLI $CLI_VERSION."
+            exit 0
+          fi
+
+          branch="automation/update-cli-$CLI_VERSION"
+          title="chore: update CLI to $CLI_VERSION"
+          existing_branch=$(git ls-remote --heads origin "refs/heads/$branch")
+          if [[ -n "$existing_branch" ]]; then
+            git fetch --no-tags origin "refs/heads/$branch"
+            changed_files=$(git diff --name-only HEAD...FETCH_HEAD)
+            if [[ "$changed_files" != cli.json ]] || ! git diff --quiet FETCH_HEAD -- cli.json; then
+              echo "Branch $branch does not match the generated CLI update. Review it before retrying." >&2
+              exit 1
+            fi
+          else
+            git add -- cli.json
+            git -c user.name='github-actions[bot]' \
+                -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+                commit -m "$title"
+            git push origin "HEAD:refs/heads/$branch"
+          fi
+
+          existing_pr=$(gh pr list --head "$branch" --base "$BASE_BRANCH" --state open \
+            --json url,isCrossRepository --jq 'map(select(.isCrossRepository | not)) | .[0].url // empty')
+          if [[ -n "$existing_pr" ]]; then
+            echo "Pull request already open: $existing_pr"
+            exit 0
+          fi
+
+          gh pr create --head "$branch" --base "$BASE_BRANCH" --title "$title" \
+            --body "Update the pinned CLI manifest to $CLI_VERSION. After merging, use the existing version tag workflow to publish the release."
